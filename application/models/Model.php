@@ -2,19 +2,37 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model extends CI_Model {
+
+    function validateCredential($email, $password) {
+        $this->db->select('*');
+        $this->db->from('access');
+        $this->db->where('email', $email);
+        $this->db->where('password', sha1($password));
+
+        $get_rows = $this->db->get();
+        $num_rows_affected = $get_rows->num_rows();
+        $query = $get_rows->result();
+
+        if (isset($query) and $num_rows_affected == 1) {
+            return $query[0];
+        } else {
+            return null;
+        }
+    }
+
     //CRUD function:
 
     //C -> Create
-    function createToDo($data) {
-        $this->db->insert('todo', $data);
+    function create($table, $data) {
+        $this->db->insert($table, $data);
     }
 
     //R -> Read
-    function readToDos() {
+    function readAll($table) {
         $data=null;
 
         $this->db->select('*');
-        $this->db->from('todo');
+        $this->db->from($table);
         $query = $this->db->get();
 
 
@@ -27,10 +45,11 @@ class Model extends CI_Model {
         }
     }
 
-    function readToDo($id) {
+    function read($user, $table, $id) {
         $this->db->select('*');
-        $this->db->from('todo');
+        $this->db->from($table);
         $this->db->where('id', $id);
+        $this->db->where('id_access', $user);
 
         $query = $this->db->get()->result();
 
@@ -42,15 +61,15 @@ class Model extends CI_Model {
     }
 
     //U -> Update
-    function updateToDo($id, $data) {
+    function update($table, $id, $data) {
         $this->db->where('id', $id);
-        $this->db->update('todo', $data);
+        $this->db->update($table, $data);
     }
 
     //D -> Delete
-    function deleteToDo($id) {
+    function delete($table, $id) {
         $this->db->where('id', $id);
-        $this->db->delete('todo');
+        $this->db->delete($table);
     }
 
 }

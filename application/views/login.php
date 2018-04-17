@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 
     <meta charset="utf-8">
-    <title>Welcome to CodeIgniter</title>
+    <title>ToDo</title>
 
     <!--Font Awesome-->
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -14,19 +14,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600">
 
     <!--Stylesheet project-->
-    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/stylesheets/login.css">
 
 </head>
 <body>
 
 <section>
-    <!--Form-->
+    <!--Login-->
     <div>
-        <form method="post" action="<?= site_url('app/update'); ?>">
-            <input type="hidden" name="id" value="<?= $todo->id; ?>">
-            <input type="text" name="text" value="<?= $todo->text; ?>">
-            <button type="submit">Update</button>
+        <form method="post" action="<?= site_url('welcome/login'); ?>">
+            <label for="email">Email*</label>
+            <input type="email" name="email">
+            <label for="password">Password*</label>
+            <input type="password" name="password">
+            <button type="submit">Login</button>
         </form>
+
+        <?= (function_exists('validation_errors'))? validation_errors() : ''; ?>
     </div>
 </section>
 </body>

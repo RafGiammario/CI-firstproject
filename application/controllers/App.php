@@ -3,14 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class App extends CI_Controller {
 
+    function __construct() {
+        parent::__construct();
+
+        $loggedIn = $this->session->userdata('logged-in');
+
+        if (!isset($loggedIn) || $loggedIn != true) {
+            show_404();
+        }
+    }
+
     function index() {
-        $data["todos"] = $this->model->readToDos();
+        $data["todos"] = $this->model->readAll('todo');
 
         $this->load->view('list', $data);
     }
 
     function todo($id) {
-        $data['todo'] = $this->model->readToDo($id);
+        $data['todo'] = $this->model->read('todo', $id);
 
         $this->load->view('update', $data);
     }
@@ -28,7 +38,7 @@ class App extends CI_Controller {
                 'createdAt' => date('Y-m-d H:i:s')
             );
 
-            $this->model->createToDO($data);
+            $this->model->create('todo', $data);
 
             redirect('app');
         }
@@ -39,7 +49,7 @@ class App extends CI_Controller {
             'completed' => true,
         );
 
-        $this->model->updateToDo($id, $data);
+        $this->model->update('todo', $id, $data);
 
         redirect('app');
     }
@@ -49,7 +59,7 @@ class App extends CI_Controller {
             'completed' => false,
         );
 
-        $this->model->updateToDo($id, $data);
+        $this->model->update('todo', $id, $data);
 
         redirect('app');
     }
@@ -61,13 +71,13 @@ class App extends CI_Controller {
             'text' => $this->input->post('text'),
         );
 
-        $this->model->updateToDo($id, $data);
+        $this->model->update('todo', $id, $data);
 
         redirect('app');
     }
 
     function delete($id) {
-        $this->model->deleteToDo($id);
+        $this->model->delete('todo', $id);
 
         redirect('app');
     }
