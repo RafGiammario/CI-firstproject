@@ -66,6 +66,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                 </li>
                 <?php endforeach; ?>
+
+                <li class="attachment-form">
+                    <div>
+                        <form action="" enctype="multipart/form-data">
+                            <input id="file" type="file" name="file">
+                            <button type="submit">Upload</button>
+                        </form>
+                    </div>
+                </li>
+
+                <ul>
+                    <?php foreach ($todos as $todo) : ?>
+                        <li>
+                            <!--View-->
+                            <div>
+                                <a id="check" href="<?php echo ($todo->completed)? site_url("app/uncheck/$todo->id") : site_url("app/check/$todo->id"); ?>">
+                                        <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+
+                            <!--Attachment-->
+                            <div>
+                                <p>-----</p>
+                            </div>
+
+                            <!--Buttons-->
+                            <div>
+                                <!--Delete-->
+                                <a href="">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </ul>
             <?php endif; ?>
         </div>
