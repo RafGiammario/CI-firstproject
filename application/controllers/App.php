@@ -14,15 +14,20 @@ class App extends CI_Controller {
     }
 
     function index() {
-        $data["todos"] = $this->model->readAll('todo');
+        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
 
         $this->load->view('list', $data);
     }
 
     function todo($id) {
-        $data['todo'] = $this->model->read('todo', $id);
+        $data['todo'] = $this->model->read('todo', $id, $this->session->userdata('id'));
 
-        $this->load->view('update', $data);
+        if ($data['todo']) {
+            $this->load->view('update', $data);
+        } else {
+            show_404();
+        }
+
     }
 
     function  newToDo() {
@@ -34,6 +39,7 @@ class App extends CI_Controller {
             $this->index();
         } else {
             $data = array(
+                'id_access' => $this->session->userdata('id'),
                 'text' => $this->input->post('todo'),
                 'createdAt' => date('Y-m-d H:i:s')
             );
@@ -49,9 +55,11 @@ class App extends CI_Controller {
             'completed' => true,
         );
 
-        $this->model->update('todo', $id, $data);
+        $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
-        redirect('app');
+        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+
+        $this->load->view('ajax/list', $data);
     }
 
     function uncheck($id) {
@@ -59,9 +67,11 @@ class App extends CI_Controller {
             'completed' => false,
         );
 
-        $this->model->update('todo', $id, $data);
+        $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
-        redirect('app');
+        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+
+        $this->load->view('ajax/list', $data);
     }
 
     function update() {
@@ -71,15 +81,17 @@ class App extends CI_Controller {
             'text' => $this->input->post('text'),
         );
 
-        $this->model->update('todo', $id, $data);
+        $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
         redirect('app');
     }
 
     function delete($id) {
-        $this->model->delete('todo', $id);
+        $this->model->delete('todo', $id, $this->session->userdata('id'));
 
-        redirect('app');
+        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+
+        $this->load->view('ajax/list', $data);
     }
 
 }

@@ -13,8 +13,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!--Open Sans-->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600">
 
-    <!--Stylesheet project-->
+    <!--Stylesheet-->
     <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/stylesheets/style.css">
+
+    <!--JQuery-->
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
 <body>
@@ -31,24 +34,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
 
         <!--List-->
-        <div>
+        <div id="list">
+            <?php if ($todos): ?>
             <ul>
                 <?php foreach ($todos as $todo) : ?>
                 <li class="<?php if($todo->completed) echo 'done'; ?>">
                     <!--Check-->
                     <div>
-                        <a href="<?php echo ($todo->completed)? site_url("app/uncheck/$todo->id") : site_url("app/check/$todo->id"); ?>">
+                        <a id="check" href="<?php echo ($todo->completed)? site_url("app/uncheck/$todo->id") : site_url("app/check/$todo->id"); ?>">
                             <?php if($todo->completed): ?>
                             <i class="fa fa-check"></i>
                             <?php endif; ?>
                         </a>
                     </div>
-                    
+
                     <!--To Do-->
                     <div>
                         <p><?= $todo->text ?></p>
                     </div>
-                    
+
                     <!--Buttons-->
                     <div>
                         <!--Modify-->
@@ -56,14 +60,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <i class="fa fa-pencil"></i>
                         </a>
                         <!--Delete-->
-                        <a href="<?= site_url("app/delete/$todo->id"); ?>">
+                        <a id="delete" href="<?= site_url("app/delete/$todo->id"); ?>">
                             <i class="fa fa-times"></i>
                         </a>
                     </div>
                 </li>
                 <?php endforeach; ?>
             </ul>
+            <?php endif; ?>
         </div>
+
     </section>
+
+    <!--MyScript-->
+    <script type="application/javascript" src="<?= base_url()?>assets/js/list.js"></script>
 </body>
 </html>

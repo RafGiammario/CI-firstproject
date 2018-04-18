@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!--Open Sans-->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600">
 
-    <!--Stylesheet project-->
+    <!--Stylesheet-->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/stylesheets/login.css">
 
 </head>
