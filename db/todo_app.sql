@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Creato il: Apr 18, 2018 alle 07:34
--- Versione del server: 5.7.21
--- Versione PHP: 7.1.16
+-- Host: localhost:3306
+-- Generation Time: Apr 19, 2018 at 04:02 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -27,7 +27,7 @@ USE `todo_app`;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `access`
+-- Table structure for table `access`
 --
 
 DROP TABLE IF EXISTS `access`;
@@ -40,21 +40,31 @@ CREATE TABLE `access` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Svuota la tabella prima dell'inserimento `access`
---
-
-TRUNCATE TABLE `access`;
---
--- Dump dei dati per la tabella `access`
+-- Dumping data for table `access`
 --
 
 INSERT INTO `access` (`id`, `name`, `email`, `password`, `createdAt`) VALUES
-(1, 'Raffaele Giammario', 'raf.giammario@gmail.com', 'd7ec127513978723369f43edf4fb178e2b78f0a1', '2018-04-17 13:00:17');
+(1, 'Raffaele Giammario', 'raf.giammario@gmail.com', 'd7ec127513978723369f43edf4fb178e2b78f0a1', '2018-04-17 13:00:17'),
+(2, 'Marco Rosso', 'mrosso@hotmail.it', '55a7615dfa230854bed2bc1615df5b4c437499b6', '2018-04-18 08:28:00');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `todo`
+-- Table structure for table `attachment`
+--
+
+DROP TABLE IF EXISTS `attachment`;
+CREATE TABLE `attachment` (
+  `id_attachment` int(11) NOT NULL,
+  `id_todo` int(11) NOT NULL,
+  `attachment` varchar(255) NOT NULL,
+  `type_attachment` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `todo`
 --
 
 DROP TABLE IF EXISTS `todo`;
@@ -68,59 +78,70 @@ CREATE TABLE `todo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Svuota la tabella prima dell'inserimento `todo`
---
-
-TRUNCATE TABLE `todo`;
---
--- Dump dei dati per la tabella `todo`
+-- Dumping data for table `todo`
 --
 
 INSERT INTO `todo` (`id`, `id_access`, `text`, `completed`, `createdAt`, `updateAt`) VALUES
-(2, 1, 'Pick up Banane', 0, '2018-04-16 08:00:00', '2018-04-17 14:58:24'),
-(3, 1, 'Call Mom', 1, '2018-04-17 08:15:34', '2018-04-17 14:58:31'),
-(4, 1, 'Pick up Newspapers', 1, '2018-04-17 08:44:19', '2018-04-17 14:58:36'),
-(5, 1, 'Meet Mary', 1, '2018-04-17 09:52:01', '2018-04-17 14:58:39');
+(102, 1, 'Create ajax call for uploading', 0, '2018-04-19 12:53:36', '2018-04-19 12:53:36'),
+(105, 2, 'required a input in update', 0, '2018-04-19 14:40:26', '2018-04-19 14:47:53'),
+(106, 2, 'create icon for upload', 0, '2018-04-19 14:40:42', '2018-04-19 14:47:55'),
+(107, 2, 'set alter table for id', 0, '2018-04-19 14:48:52', '2018-04-19 14:48:52');
 
 --
--- Indici per le tabelle scaricate
+-- Indexes for dumped tables
 --
 
 --
--- Indici per le tabelle `access`
+-- Indexes for table `access`
 --
 ALTER TABLE `access`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `todo`
+-- Indexes for table `attachment`
+--
+ALTER TABLE `attachment`
+  ADD PRIMARY KEY (`id_attachment`),
+  ADD KEY `id_todo` (`id_todo`);
+
+--
+-- Indexes for table `todo`
 --
 ALTER TABLE `todo`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_access` (`id_access`);
 
 --
--- AUTO_INCREMENT per le tabelle scaricate
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT per la tabella `access`
+-- AUTO_INCREMENT for table `access`
 --
 ALTER TABLE `access`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT per la tabella `todo`
+-- AUTO_INCREMENT for table `attachment`
+--
+ALTER TABLE `attachment`
+  MODIFY `id_attachment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `todo`
 --
 ALTER TABLE `todo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+--
+-- Constraints for dumped tables
+--
 
 --
--- Limiti per le tabelle scaricate
+-- Constraints for table `attachment`
 --
+ALTER TABLE `attachment`
+  ADD CONSTRAINT `attachment_todo` FOREIGN KEY (`id_todo`) REFERENCES `todo` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Limiti per la tabella `todo`
+-- Constraints for table `todo`
 --
 ALTER TABLE `todo`
   ADD CONSTRAINT `todo_access` FOREIGN KEY (`id_access`) REFERENCES `access` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
