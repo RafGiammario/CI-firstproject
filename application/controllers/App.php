@@ -19,6 +19,7 @@ class App extends CI_Controller {
         $this->load->view('list', $data);
     }
 
+    ////Methods for ToDo
     function todo($id) {
         $data['todo'] = $this->model->read('todo', $id, $this->session->userdata('id'));
 
@@ -92,6 +93,17 @@ class App extends CI_Controller {
         $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
 
         $this->load->view('ajax/list', $data);
+    }
+
+    ////Methods for Attachment
+    function new_attachment() {
+        if (!($_FILES['file']['size'] == 0)) {
+            $this->load->library('upload');
+
+            $config['upload_path'] = "./resources/attachments";
+        } else {
+
+        }
     }
 
 }

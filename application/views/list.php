@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                 <li class="attachment-form">
                     <div>
-                        <form action="" enctype="multipart/form-data">
+                        <form action="<?= site_url("app/new_attachment/$todo->id") ?>" enctype="multipart/form-data">
                             <input id="file" type="file" name="file">
                             <button type="submit">Upload</button>
                         </form>
