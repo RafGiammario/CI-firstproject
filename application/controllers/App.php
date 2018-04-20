@@ -14,7 +14,15 @@ class App extends CI_Controller {
     }
 
     function index() {
-        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+        $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
+
+        foreach ($data['todos'] as $todo) {
+            $attachments = $this->model->readAll('attachment', 'id_todo', $todo->id);
+
+            if ($attachment) {
+                $todo->attachemnts = $attachments;
+            }
+        }
 
         $this->load->view('global/head');
         $this->load->view('list', $data);
@@ -62,7 +70,7 @@ class App extends CI_Controller {
 
         $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
-        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+        $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
 
         $this->load->view('ajax/list', $data);
     }
@@ -74,7 +82,7 @@ class App extends CI_Controller {
 
         $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
-        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+        $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
 
         $this->load->view('ajax/list', $data);
     }
@@ -94,19 +102,33 @@ class App extends CI_Controller {
     function delete($id) {
         $this->model->delete('todo', $id, $this->session->userdata('id'));
 
-        $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
+        $data["todos"] = $this->model->readAll('todo', 'id_access',  $this->session->userdata('id'));
 
         $this->load->view('ajax/list', $data);
     }
 
     ////Methods for Attachment
-    function new_attachment() {
+    function new_attachment($id) {
         if (!($_FILES['file']['size'] == 0)) {
             $this->load->library('upload');
 
             $config['upload_path'] = "./resources/attachments";
-        } else {
+            $config['allowed_ext'] = "jpg|png";
+            $config['overwrite'] = false;
 
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('file')) {
+                $file = $this->upload->data();
+
+                $data = array(
+                    'id_todo' => $id,
+                    'attachment' => $file['raw_name'],
+                    'type_attachment' => $file['file_ext'],
+                );
+
+                $this->model->create('attachment', $data);
+            }
         }
     }
 

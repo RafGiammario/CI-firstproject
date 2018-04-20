@@ -29,12 +29,12 @@ class Model extends CI_Model {
     }
 
     //R -> Read
-    function readAll($table, $user=null) {
+    function readAll($table, $column=null, $id=null) {
         $data=null;
 
         $this->db->select('*');
         $this->db->from($table);
-        if ($user) $this->db->where('id_access', $user);
+        if ($user) $this->db->where($column, $id);
 
         $query = $this->db->get();
 
@@ -48,11 +48,11 @@ class Model extends CI_Model {
         }
     }
 
-    function read($table, $id, $user = null) {
+    function read($table, $id, $column = null, $user = null) {
         $this->db->select('*');
         $this->db->from($table);
         $this->db->where('id', $id);
-        if ($user) $this->db->where('id_access', $user);
+        if ($column and $user) $this->db->where($column, $user);
 
         $query = $this->db->get()->result();
 
