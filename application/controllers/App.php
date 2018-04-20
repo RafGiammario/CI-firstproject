@@ -13,7 +13,7 @@ class App extends CI_Controller {
         }
     }
 
-    function index() {
+    function createContents() {
         $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
 
         foreach ($data['todos'] as $todo) {
@@ -23,6 +23,12 @@ class App extends CI_Controller {
                 $todo->attachments = $attachments;
             }
         }
+
+        return $data;
+    }
+
+    function index() {
+        $data = $this->createContents();
 
         $this->load->view('global/head');
         $this->load->view('list', $data);
@@ -70,7 +76,7 @@ class App extends CI_Controller {
 
         $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
-        $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
+        $data = $this->createContents();
 
         $this->load->view('ajax/list', $data);
     }
@@ -82,7 +88,7 @@ class App extends CI_Controller {
 
         $this->model->update('todo', $id, $data, $this->session->userdata('id'));
 
-        $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
+        $data = $this->createContents();
 
         $this->load->view('ajax/list', $data);
     }
@@ -102,7 +108,7 @@ class App extends CI_Controller {
     function delete($id) {
         $this->model->delete('todo', $id, $this->session->userdata('id'));
 
-        $data["todos"] = $this->model->readAll('todo', 'id_access',  $this->session->userdata('id'));
+        $data = $this->createContents();
 
         $this->load->view('ajax/list', $data);
     }

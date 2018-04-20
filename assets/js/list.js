@@ -31,7 +31,6 @@ $(document).ready( function () {
             'data': {},
             'success': function (data) {
                 if (data) {
-                    console.log(data);
                     $('#list').html(data);
 
                 }
@@ -45,6 +44,6 @@ $(document).ready( function () {
 
     $(document).on('click', '.update_btn', function(element) {
         let id = $(this).data("id");
-        $('#update_form_'+id).toggle();
+        $('#update_form_'+id).slideToggle("fast", "swing");
     })
 });

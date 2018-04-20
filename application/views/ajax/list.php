@@ -44,10 +44,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <button type="submit">Upload</button>
                     </form>
                 </div>
-
+            </li>
+            <li class="attachment-form" style="margin-top: -2.5em; padding-top: 0; font-size: 16px;">
                 <?php if (isset($todo->attachments)): ?>
-                    <ul>
-
+                    <ul style="margin-top: 0; padding-top: 0;">
                         <?php foreach ($todo->attachments as $attachment) : ?>
                             <li>
                                 <!--View-->
