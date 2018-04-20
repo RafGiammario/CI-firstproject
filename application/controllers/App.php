@@ -13,6 +13,11 @@ class App extends CI_Controller {
         }
     }
 
+    function logout() {
+        $this->session->sess_destroy();
+        redirect("/");
+    }
+
     function createContents() {
         $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
 
@@ -33,6 +38,7 @@ class App extends CI_Controller {
         $data = $this->createContents();
 
         $this->load->view('global/head');
+        $this->load->view('global/hader');
         $this->load->view('list', $data);
         $this->load->view('global/foot');
     }

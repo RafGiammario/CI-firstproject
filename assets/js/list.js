@@ -3,22 +3,25 @@ $(document).ready( function () {
 
         e.preventDefault();
 
-        alert('You are deleting Something!');
-
-        $.ajax({
-            'url': $(this).attr('href'),
-            'type': 'POST',
-            'data': {},
-            'success': function (data) {
-                if (data) {
-                    $('#list').html(data);
+        var result = confirm('You are deleting Something!');
+        if (result) {
+            $.ajax({
+                'url': $(this).attr('href'),
+                'type': 'POST',
+                'data': {},
+                'success': function (data) {
+                    if (data) {
+                        $('#list').html(data);
+                    }
                 }
-            }
-        }).done( function () {
-            console.log('Ajax Call Done');
-        }).fail( function () {
-            console.log('Ajax Call Fail');
-        });
+            }).done( function () {
+                console.log('Ajax Call Done');
+            }).fail( function () {
+                console.log('Ajax Call Fail');
+            });
+        }
+
+
     });
 
     $(document).on('click', '#check', function (e) {
