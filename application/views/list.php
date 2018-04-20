@@ -78,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <!--Buttons-->
                             <div>
                                 <!--Delete-->
-                                <a href="<?= site_url("app/delete_attachment/$attachment->id_attachment"); ?>">
+                                <a id="delete" href="<?= site_url("app/delete_attachment/$attachment->id"); ?>">
                                     <i class="fa fa-times"></i>
                                 </a>
                             </div>

@@ -16,11 +16,13 @@ class App extends CI_Controller {
     function createContents() {
         $data["todos"] = $this->model->readAll('todo', 'id_access', $this->session->userdata('id'));
 
-        foreach ($data['todos'] as $todo) {
-            $attachments = $this->model->readAll('attachment', 'id_todo', $todo->id);
+        if($data['todos']) {
+            foreach ($data['todos'] as $todo) {
+                $attachments = $this->model->readAll('attachment', 'id_todo', $todo->id);
 
-            if ($attachments) {
-                $todo->attachments = $attachments;
+                if ($attachments) {
+                    $todo->attachments = $attachments;
+                }
             }
         }
 
@@ -139,6 +141,14 @@ class App extends CI_Controller {
                  redirect('app');
              }
          }
+    }
+
+    function delete_attachment($id) {
+        $this->model->delete('attachment', $id);
+
+        $data = $this->createContents();
+
+        $this->load->view('ajax/list', $data);
     }
 
 }

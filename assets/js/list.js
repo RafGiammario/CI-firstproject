@@ -3,7 +3,7 @@ $(document).ready( function () {
 
         e.preventDefault();
 
-        alert('You are deleting a To Do!');
+        alert('You are deleting Something!');
 
         $.ajax({
             'url': $(this).attr('href'),
