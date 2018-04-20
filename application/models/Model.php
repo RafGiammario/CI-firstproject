@@ -25,16 +25,15 @@ class Model extends CI_Model {
     //C -> Create
     function create($table, $data) {
         $this->db->insert($table, $data);
-
     }
 
     //R -> Read
-    function readAll($table, $column=null, $id=null) {
+    function readAll($table, $column = null, $condition = null) {
         $data=null;
 
         $this->db->select('*');
         $this->db->from($table);
-        if ($user) $this->db->where($column, $id);
+        if ($condition) $this->db->where($column, $condition);
 
         $query = $this->db->get();
 
@@ -48,11 +47,11 @@ class Model extends CI_Model {
         }
     }
 
-    function read($table, $id, $column = null, $user = null) {
+    function read($table, $id, $column = null, $condition = null) {
         $this->db->select('*');
         $this->db->from($table);
         $this->db->where('id', $id);
-        if ($column and $user) $this->db->where($column, $user);
+        if ($column and $condition) $this->db->where($column, $condition);
 
         $query = $this->db->get()->result();
 
@@ -64,17 +63,17 @@ class Model extends CI_Model {
     }
 
     //U -> Update
-    function update($table, $id, $data, $user = null) {
+    function update($table, $id , $data, $column = null, $conditon = null) {
         $this->db->where('id', $id);
         $this->db->update($table, $data);
-        if ($user) $this->db->where('id_access', $user);
+        if ($conditon) $this->db->where($column, $conditon);
     }
 
     //D -> Delete
-    function delete($table, $id, $user = null) {
+    function delete($table, $id, $column = null, $condition = null) {
         $this->db->where('id', $id);
         $this->db->delete($table);
-        if ($user) $this->db->where('id_access', $user);
+        if ($condition) $this->db->where($column, $condition);
     }
 
 }

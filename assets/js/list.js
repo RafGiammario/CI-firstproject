@@ -43,4 +43,8 @@ $(document).ready( function () {
         });
     });
 
+    $(document).on('click', '.update_btn', function(element) {
+        let id = $(this).data("id");
+        $('#update_form_'+id).toggle();
+    })
 });

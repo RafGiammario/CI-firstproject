@@ -19,8 +19,8 @@ class App extends CI_Controller {
         foreach ($data['todos'] as $todo) {
             $attachments = $this->model->readAll('attachment', 'id_todo', $todo->id);
 
-            if ($attachment) {
-                $todo->attachemnts = $attachments;
+            if ($attachments) {
+                $todo->attachments = $attachments;
             }
         }
 
@@ -34,9 +34,9 @@ class App extends CI_Controller {
         $data['todo'] = $this->model->read('todo', $id, $this->session->userdata('id'));
 
         if ($data['todo']) {
-            $this->load->view('global/head', $data);
+            $this->load->view('global/head');
             $this->load->view('update', $data);
-            $this->load->view('global/foot', $data);
+            $this->load->view('global/foot');
         } else {
             show_404();
         }
@@ -109,27 +109,30 @@ class App extends CI_Controller {
 
     ////Methods for Attachment
     function new_attachment($id) {
-        if (!($_FILES['file']['size'] == 0)) {
-            $this->load->library('upload');
+         if (!($_FILES['file']['size'] == 0)) {
+             $this->load->library('upload');
 
-            $config['upload_path'] = "./resources/attachments";
-            $config['allowed_ext'] = "jpg|png";
-            $config['overwrite'] = false;
+             $config['upload_path'] = './resources/attachments';
+             $config['allowed_types'] = "jpg|png";
+             $config['overwrite'] = false;
 
-            $this->upload->initialize($config);
+             $this->upload->initialize($config);
 
-            if ($this->upload->do_upload('file')) {
-                $file = $this->upload->data();
+             if ($this->upload->do_upload('file')) {
 
-                $data = array(
-                    'id_todo' => $id,
-                    'attachment' => $file['raw_name'],
-                    'type_attachment' => $file['file_ext'],
-                );
+                 $file = $this->upload->data();
 
-                $this->model->create('attachment', $data);
-            }
-        }
+                 $data = array(
+                     'id_todo' => $id,
+                     'attachment' => $file['raw_name'],
+                     'type_attachment' => $file['file_ext'],
+                 );
+
+                 $this->model->create('attachment', $data);
+
+                 redirect('app');
+             }
+         }
     }
 
 }
