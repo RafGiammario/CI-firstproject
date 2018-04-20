@@ -4,7 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Welcome extends CI_Controller {
 
 	public function index()	{
+		$this->load->view('global/head');
 		$this->load->view('login');
+		$this->load->view('global/foot');
 	}
 
 	public function login() {

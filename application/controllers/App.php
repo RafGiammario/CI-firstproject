@@ -16,7 +16,9 @@ class App extends CI_Controller {
     function index() {
         $data["todos"] = $this->model->readAll('todo', $this->session->userdata('id'));
 
+        $this->load->view('global/head');
         $this->load->view('list', $data);
+        $this->load->view('global/foot');
     }
 
     ////Methods for ToDo
@@ -24,7 +26,9 @@ class App extends CI_Controller {
         $data['todo'] = $this->model->read('todo', $id, $this->session->userdata('id'));
 
         if ($data['todo']) {
+            $this->load->view('global/head', $data);
             $this->load->view('update', $data);
+            $this->load->view('global/foot', $data);
         } else {
             show_404();
         }
