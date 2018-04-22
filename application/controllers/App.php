@@ -38,7 +38,7 @@ class App extends CI_Controller {
         $data = $this->createContents();
 
         $this->load->view('global/head');
-        $this->load->view('global/hader');
+        $this->load->view('global/header');
         $this->load->view('list', $data);
         $this->load->view('global/foot');
     }
@@ -126,14 +126,22 @@ class App extends CI_Controller {
          if (!($_FILES['file']['size'] == 0)) {
              $this->load->library('upload');
 
-             $config['upload_path'] = './resources/attachments';
+             $config['upload_path'] = ATTACHMENTS;
              $config['allowed_types'] = "jpg|png";
              $config['overwrite'] = false;
 
              $this->upload->initialize($config);
 
-             if ($this->upload->do_upload('file')) {
+             if ( ! $this->upload->do_upload('file'))
+             {
+                 $error = array('error' => $this->upload->display_errors());
 
+                 echo '<PRE>';
+                 print_r($error);
+                 print_r($config);
+             }
+             else
+             {
                  $file = $this->upload->data();
 
                  $data = array(
@@ -150,7 +158,11 @@ class App extends CI_Controller {
     }
 
     function delete_attachment($id) {
+        $file = $this->model->read('attachment', $id);
+        $filename = $file->attachment . $file->type_attachment;
         $this->model->delete('attachment', $id);
+
+        unlink(ATTACHMENTS . '/' . $filename);
 
         $data = $this->createContents();
 
